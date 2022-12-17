@@ -3,3 +3,6 @@
 
 # Keys file
 keys.json
+
+# Vagrant stuff
+.vagrant
