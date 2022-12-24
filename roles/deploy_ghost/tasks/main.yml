@@ -1,1 +1,17 @@
+---
 ## TODO: Add Ansible configuration here
+## FIXME: Needs to be tested!!!
+- name: Install pre-requisites
+  pip:
+    name:
+      - kubernetes
+
+- name: Deploy Ghost
+  k8s:
+    state: present
+    src: ghost/ghost-deployment.yml
+
+- name: Deploy Ghost Service
+  k8s:
+    state: present
+    src: ghost/ghost-service.yml
