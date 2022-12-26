@@ -6,3 +6,6 @@ keys.json
 
 # Vagrant stuff
 .vagrant
+
+# Temporary files
+/tmp
