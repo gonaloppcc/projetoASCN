@@ -22,3 +22,6 @@
   k8s:
     state: present
     src: ghost/ghost-service.yml
+
+- name: Set Namespace Preference
+  shell: kubectl config set-context --current --namespace={{ k8s_namespace }}

@@ -1,22 +1,30 @@
 ---
-- name: Create a k8s namespace for MySQL
-  k8s:
-    name: mysql
-    api_version: v1
-    kind: Namespace
-    state: present
+- name: Create MySQL deployment file
+  template:
+    src: mysql-deployment
+    dest: "{{ k8s_files_path }}/mysql-deployment.yml"
+
+- name: Create MySQL pvc file
+  template:
+    src: mysql-pvc
+    dest: "{{ k8s_files_path }}/mysql-pvc.yml"
+
+- name: Create MySQL service file
+  template:
+    src: mysql-service
+    dest: "{{ k8s_files_path }}/mysql-service.yml"
 
 - name: Deploy MySQL
   k8s:
     state: present
-    src: mysql/mysql-deployment.yml
+    src: "{{ k8s_files_path }}/mysql-deployment.yml"
 
 - name: Add MySQL Persistent Volume Claim
   k8s:
     state: present
-    src: mysql/mysql-pvc.yml
+    src: "{{ k8s_files_path }}/mysql-pvc.yml"
 
 - name: Deploy MySQL Service
   k8s:
     state: present
-    src: mysql/mysql-service.yml
+    src: "{{ k8s_files_path }}/mysql-service.yml"

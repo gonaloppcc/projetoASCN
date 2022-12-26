@@ -1,0 +1,9 @@
+# Shared MySQL database settings
+app_db_name: ghost
+app_db_user: ghostuser
+
+app_db_password: password #Careful this should be using VAULT!!!!
+
+k8s_namespace: ghost
+
+k8s_files_path: /tmp

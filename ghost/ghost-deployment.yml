@@ -28,7 +28,7 @@ spec:
         - name: database__connection__user
           value: ghostuser
         - name: database__connection__password
-          value: "pass"
+          value: "password"
         - name: database__connection__host
           value: mysql-service
         ports:
