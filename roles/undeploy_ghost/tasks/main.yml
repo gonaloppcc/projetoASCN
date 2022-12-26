@@ -9,8 +9,18 @@
     api_version: v1
     kind: Namespace
     state: absent
+    wait: yes
 
 - name: Deleting temporary folder
   file:
     path: "{{ k8s_files_path }}"
     state: absent
+
+- name: Deleting Persistent Volume Claim
+  k8s:
+    name: mysql-pv-claim
+    api_version: v1
+    kind: PersistentVolumeClaim
+    state: absent
+    wait: yes
+  when: delete_data is defined and delete_data == true

@@ -14,16 +14,16 @@
     src: mysql-service
     dest: "{{ k8s_files_path }}/mysql-service.yml"
 
-- name: Deploy MySQL
-  k8s:
-    state: present
-    src: "{{ k8s_files_path }}/mysql-deployment.yml"
-    wait: yes
-
 - name: Add MySQL Persistent Volume Claim
   k8s:
     state: present
     src: "{{ k8s_files_path }}/mysql-pvc.yml"
+    wait: yes
+
+- name: Deploy MySQL
+  k8s:
+    state: present
+    src: "{{ k8s_files_path }}/mysql-deployment.yml"
     wait: yes
 
 - name: Deploy MySQL Service

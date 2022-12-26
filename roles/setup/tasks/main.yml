@@ -6,10 +6,11 @@
 
 - name: Create namespace
   k8s:
-    name: ghost
+    name: "{{ k8s_namespace }}"
     api_version: v1
     kind: Namespace
     state: present
+    wait: yes
 
 - name: Create temporary folder
   file:
