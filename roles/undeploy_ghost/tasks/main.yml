@@ -1,4 +1,16 @@
 ---
-- name: Unploying Ghost
+- name: Unploying Ghost and MySQL
   shell:
-    kubectl delete all --all -n ghost
+    kubectl delete all --all -n {{ k8s_namespace }}
+
+- name: Deleting namespace
+  k8s:
+    name: "{{ k8s_namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: absent
+
+- name: Deleting temporary folder
+  file:
+    path: "{{ k8s_files_path }}"
+    state: absent

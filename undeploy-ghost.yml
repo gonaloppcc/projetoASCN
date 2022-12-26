@@ -4,6 +4,5 @@
   hosts: localhost
   gather_facts: false
   roles:
-    - undeploy_mysql
     - undeploy_ghost
 

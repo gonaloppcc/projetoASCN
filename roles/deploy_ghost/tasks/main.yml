@@ -1,27 +1,23 @@
 ---
-## TODO: Add Ansible configuration here
-## FIXME: Needs to be tested!!!
-- name: Install pre-requisites
-  pip:
-    name:
-      - kubernetes
+- name: Create Ghost deployment file
+  template:
+    src: ghost-deployment
+    dest: "{{ k8s_files_path }}/ghost-deployment.yml"
 
-- name: Create namespace
-  k8s:
-    name: ghost
-    api_version: v1
-    kind: Namespace
-    state: present
+- name: Create Ghost service file
+  template:
+    src: ghost-service
+    dest: "{{ k8s_files_path }}/ghost-service.yml"
 
 - name: Deploy Ghost
   k8s:
     state: present
-    src: ghost/ghost-deployment.yml
+    src: "{{ k8s_files_path }}/ghost-deployment.yml"
+    wait: yes
 
 - name: Deploy Ghost Service
   k8s:
     state: present
-    src: ghost/ghost-service.yml
+    src: "{{ k8s_files_path }}/ghost-service.yml"
+    wait: yes
 
-- name: Set Namespace Preference
-  shell: kubectl config set-context --current --namespace={{ k8s_namespace }}
