@@ -1,0 +1,4 @@
+---
+- name: Unploying Ghost
+  shell:
+    kubectl delete all --all -n ghost

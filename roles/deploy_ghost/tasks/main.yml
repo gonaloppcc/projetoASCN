@@ -6,6 +6,13 @@
     name:
       - kubernetes
 
+- name: Create namespace
+  k8s:
+    name: ghost
+    api_version: v1
+    kind: Namespace
+    state: present
+
 - name: Deploy Ghost
   k8s:
     state: present

@@ -3,7 +3,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ghost
+  name: ghost-deployment
+  namespace: ghost
   labels:
     app: ghost
 spec:
@@ -11,20 +12,24 @@ spec:
   selector:
     matchLabels:
       app: ghost
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: ghost
     spec:
       containers:
-        - name: ghost
-          image: ghost:5.14.1
-          env:
-            - name: database__client
-              value: mysql
-            - name: database__connection__host
-              value: mysql-service
-            - name: database__connection__user
-              value: ghostuser
-            - name: database__connection__password
-              value: \"123456\" # Use
+      - name: ghost
+        image: ghost:5.14.1
+        env: # The variables below could be set on a ConfigMap object
+        - name: database__connection__database
+          value: ghost
+        - name: database__connection__user
+          value: ghostuser
+        - name: database__connection__password
+          value: "pass"
+        - name: database__connection__host
+          value: mysql-service
+        ports:
+          - containerPort: 2368

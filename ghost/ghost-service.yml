@@ -1,19 +1,21 @@
 ---
-# Deployment of Ghost
+# Ghost Service
 apiVersion: v1
 kind: Service
 metadata:
   name: ghost-service
+  namespace: ghost
   labels:
     app: ghost
 spec:
-  type: NodePort # Makes the service accessible on a static port on each Node in the cluster.
+  type: LoadBalancer # Makes the service accessible on a static port on each Node in the cluster.
   selector:
     app: ghost
   ports:
+    - protocol: TCP
     # By default, and for convenience, the `targetPort` is set to the same value as the `port` field.
-    - targetPort: 2368 # port that containers are listening on
-      port: 8000 # port exposed internally in the cluster
+      targetPort: 2368 # port that containers are listening on
+      port: 80 # port exposed internally in the cluster
       # Optional field
       # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
-      nodePort: 30000 # a static port assigned on each the node
+      #nodePort: 30000 # a static port assigned on each the node

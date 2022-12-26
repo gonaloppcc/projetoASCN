@@ -16,7 +16,7 @@
   register: cluster
   until: "cluster is not failed"
   delay: 60
-  retries: 3
+  retries: 0
 
 - name: Verify that the cluster was created
   shell: gcloud container clusters describe  --project="{{ gcp_project}}"  --zone="{{ gcp_zone }}"  ascn-cluster

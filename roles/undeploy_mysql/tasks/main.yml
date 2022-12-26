@@ -1,0 +1,4 @@
+---
+- name: Unploying MySQL
+  shell:
+    kubectl delete all --all -n mysql
