@@ -21,3 +21,27 @@
     src: "{{ k8s_files_path }}/ghost-service.yml"
     wait: yes
 
+- name: Get Ghost service
+  k8s_info:
+    kind: Service
+    api_version: v1
+    name: ghost-service
+    namespace: ghost
+  register: ghost_service
+
+- name: Register Ghost External Ip
+  set_fact:
+    ghost_external_ip: "{{ ghost_service.resources[0].status.loadBalancer.ingress[0].ip }}"
+
+- name: Print Ghost service Ip
+  debug:
+    var: ghost_external_ip
+
+- name: Change Ghost Service External Ip in gcp config
+  lineinfile:
+    dest: "inventory/gcp.yml"
+    regexp: 'ghost_ip: .*'
+    line: "        ghost_ip: {{ ghost_external_ip }}"
+    state: present
+    backrefs: yes
+
