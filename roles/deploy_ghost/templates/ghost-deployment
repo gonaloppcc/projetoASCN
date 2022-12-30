@@ -31,5 +31,15 @@ spec:
           value: {{ app_db_password }}
         - name: database__connection__host
           value: mysql-service
+        - name: url
+          value: http://{{ ghost_ip }}:{{ ghost_port }}
+        - name: mail__transport
+          value: SMTP
+        - name: mail__options__service
+          value: Mailgun
+        - name: mail__options__auth__user
+          value: postmaster@sandbox49d1543ba9ca4600a82b8e8827de916f.mailgun.org
+        - name: mail__options__auth__pass
+          value: "6213961a623f09965020ef1c81f725c6-c2efc90c-814d3bf9"
         ports:
           - containerPort: 2368

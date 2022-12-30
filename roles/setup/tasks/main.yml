@@ -3,6 +3,7 @@
   pip:
     name:
       - kubernetes
+      - bcrypt
 
 - name: Create namespace
   k8s:
