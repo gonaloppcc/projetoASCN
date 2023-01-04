@@ -1,0 +1,24 @@
+- name: Get MySQL Pod
+  k8s_info:
+    kind: Pod
+    namespace: "{{ k8s_namespace }}"
+    label_selectors:
+      - app=mysql
+  register: mysql_pod
+
+- name: Get MySQL Pod Name
+  set_fact:
+    mysql_pod_name: '{{ mysql_pod.resources[0].metadata.name }}'
+
+- name: Get Password hash
+  shell: "python3 -c 'import bcrypt; print(bcrypt.hashpw(b\"{{ first_blog_admin.password }}\", bcrypt.gensalt(rounds=10)).decode(\"ascii\"))'"
+  register: password_hash
+
+- name: Fix Password hash
+  set_fact:
+    password_hash: '{{ password_hash.stdout | replace("$", "\$") }}'
+
+- name: Add Blog Admin to MySQL Database
+  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
+
+

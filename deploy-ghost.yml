@@ -8,3 +8,4 @@
     - setup
     - deploy_mysql
     - deploy_ghost
+    - create_blog_admin
