@@ -44,6 +44,6 @@
   lineinfile:
     dest: 'inventory/gcp.yml'
     regexp: 'ghost_ip: .*'
-    line: '        ghost_ip: {{ ghost_external_ip }}'
+    line: '    ghost_ip: {{ ghost_external_ip }}'
     state: present
     backrefs: yes

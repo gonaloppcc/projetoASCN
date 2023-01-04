@@ -20,16 +20,25 @@ spec:
         app: ghost
     spec:
       containers:
-      - name: ghost
-        image: ghost:5.14.1
-        env: # The variables below could be set on a ConfigMap object
-        - name: database__connection__database
-          value: {{ app_db_name }}
-        - name: database__connection__user
-          value: {{ app_db_user }}
-        - name: database__connection__password
-          value: {{ app_db_password }}
-        - name: database__connection__host
-          value: mysql-service
-        ports:
-          - containerPort: 2368
+        - name: ghost
+          image: ghost:5.14.1
+          env: # The variables below could be set on a ConfigMap object
+            - name: database__connection__database
+              value: {{ app_db_name }}
+            - name: database__connection__user
+              value: {{ app_db_user }}
+            - name: database__connection__password
+              value: {{ app_db_password }}
+            - name: database__connection__host
+              value: mysql-service
+            - name: mail__transport
+              value: {{ mail_transport }}
+            - name: mail__options__service
+              value: {{ mail_options_service }}
+            - name: mail__options__auth__user
+              value: {{ mail_options_auth_user }}
+            - name: mail__options__auth__pass
+              value: {{ mail_options_auth_pass }}
+
+          ports:
+            - containerPort: 2368
