@@ -1,9 +1,10 @@
 ---
-- name: Install pre-requisites
+- name: Install pre-requisites2
   pip:
     name:
-      - kubernetes
+      - kubernetes==12.0.0
       - bcrypt
+
 
 - name: Create namespace
   k8s:

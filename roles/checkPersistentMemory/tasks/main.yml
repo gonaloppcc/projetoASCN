@@ -1,0 +1,45 @@
+---
+- name: Refresh inventory
+  meta: refresh_inventory
+
+
+# Para ter ip da db
+# kubectl get all --selector=tier=database
+
+#- name: Get pod name
+#  shell: kubectl get all --selector=tier=database
+#  register: pod_db
+
+- name: Get pod name
+  kubernetes.core.k8s_info:
+    kind: Pod
+    label_selectors:
+      - tier in (database)
+  register: pod_db
+
+
+- name: Change pod name variable
+  set_fact:
+    pod_db: '{{ pod_db.resources[0].metadata.name }}'
+
+- debug: msg="{{ pod_db}}"
+
+#- name: Get query
+#  shell: kubectl exec -it {{pod_db}} -- mysql -Ns -e "use ghost; SELECT * FROM users;"
+#  register: output
+
+
+ 
+- name: Check DB
+  community.kubernetes.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+  register: answer
+
+- debug: msg="{{ answer.stdout_lines }}"
+
+- name: Check if user was changed
+  fail:
+    msg: Change not ocurred
+  when: answer.stdout_lines is regex("1\tTEST")

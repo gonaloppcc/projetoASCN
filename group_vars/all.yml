@@ -13,3 +13,8 @@ mail_transport: SMTP
 mail_options_service: Mailgun
 mail_options_auth_user: postmaster@sandbox49d1543ba9ca4600a82b8e8827de916f.mailgun.org
 mail_options_auth_pass: 8ea1b9f57c51e302d948726dd5bbba2a-c2efc90c-d3f66810
+
+first_blog_admin:
+    name: ascn
+    password: ascn123
+    email: ascn@example.com
