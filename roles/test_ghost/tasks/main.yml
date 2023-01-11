@@ -2,15 +2,9 @@
 - name: Refresh inventory
   meta: refresh_inventory
 
-# Depois tirar de comentário
-#- name: Install pre-requisites
-#  pip:
-#    name:
-#      - openshift
- 
+
 # Para ter ip da db
 # kubectl get all --selector=tier=database
-# use ghost; SELECT * FROM users;
 
 #- name: Get pod name
 #  shell: kubectl get all --selector=tier=database
@@ -35,26 +29,68 @@
 #  register: output
 
 
-
-# Caso dê erro, usar isto :)
-# https://stackoverflow.com/questions/66454603/get-list-of-k8s-pod-using-ansible
-- name: Execute a command
+- name: Install stuff
+  shell: pip3 install -Iv openshift==0.11.2
+# Depois remover o que está em baixo
+- name: BD back to normal
   community.kubernetes.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
-    command: mysql -Ns -e "use ghost; SELECT * FROM users;" 
+    command: mysql -Ns -e "use {{ app_db_name }}; update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;" 
+  register: answer
+# Caso dê erro, usar isto :)
+# https://stackoverflow.com/questions/66454603/get-list-of-k8s-pod-using-ansible
+- name: Get Users
+  community.kubernetes.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
     #command: echo "Hello"
   register: answer
 
 - debug: msg="{{ answer.stdout_lines[0] }}"
 
-- debug:
-    msg: "matched pattern 1"
-  when: answer.stdout_lines[0] is regex("1\tascn\tghost-user\t/\w+\tascn@example.com/\w+")
+#- debug:
+#    msg: "matched pattern 1"
+#  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user\t/\w+\tascn@example.com/\w+")
   
-- debug:
-    msg: "matched pattern 0"
-  when: answer.stdout_lines[0] is match("1\tascn\tghost-user\t*")
+- name: Fail Not found
+  fail:
+    msg: Username not found
+  when: answer.stdout_lines[0] is not regex("1\tGhost\tghost-user\t")
+  
+# Não dá para inserir um user, temos de dar um id, e isso é mau, porque podemos alterar um user já registado.
+# Depois pode-se meter com método de post, caso exista :)
+- name: Change user
+  community.kubernetes.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }};update users set name='TEST', status='active' where id=1;" 
+    #command: echo "Hello"
+
+#
+ 
+- name: Execute a command
+  community.kubernetes.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+  register: answer
+
+- debug: msg="{{ answer.stdout_lines }}"
+
+- name: Fail Not found
+  fail:
+    msg: Change not ocurred
+  when: answer.stdout_lines is not regex("1\tTEST")
+
+- name: BD back to normal
+  community.kubernetes.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;" 
+  register: answer
+
 
 
 - name: Check that you can connect (GET) to Ghost and it returns a status 200
