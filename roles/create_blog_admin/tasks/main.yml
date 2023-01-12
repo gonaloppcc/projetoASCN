@@ -21,4 +21,16 @@
 - name: Add Blog Admin to MySQL Database
   shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
 
+- name: Verify that Blog Admin is updated
+  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }}; select * from users;"
+  register: users_table
+
+- name: See Users table
+  debug:
+    msg: "{{ users_table.stdout }}"
+
+- name: See Users table
+  debug:
+    msg: "{{ users_table.stderr }}"
+
 
