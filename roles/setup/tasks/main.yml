@@ -21,6 +21,3 @@
 
 - name: Set Namespace Preference
   shell: kubectl config set-context --current --namespace={{ k8s_namespace }}
-
-- name : Create a Cloud Monitoring dashboard
-  shell: "gcloud monitoring dashboards create --config-from-file=dashboards/monitoring.json"
