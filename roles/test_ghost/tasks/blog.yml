@@ -1,0 +1,8 @@
+---
+
+- name: "Create Blog"
+  uri:
+    url: "http://{{ ghost_ip }}:{{ghost_port}}/ghost/api/admin/session"
+    method: POST
+  register: result
+  until: result.status == 200

@@ -12,3 +12,5 @@
   until: result.status == 200
   retries: 3
   delay: 5
+
+- include_tasks: blog.yml

@@ -1,0 +1,5 @@
+- name: Simple Test
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - test_ghost
