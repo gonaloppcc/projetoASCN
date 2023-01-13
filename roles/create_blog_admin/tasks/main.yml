@@ -36,7 +36,7 @@
     namespace: "{{k8s_namespace}}"
     pod: "{{ mysql_pod_name }}"
     command: mysql -Ns -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;" 
-  when: users_table.stdout_lines | users_table.stdout_lines > 0 
+  when: users_table.stdout_lines | length > 1
 
 #- name: Add Blog Admin to MySQL Database
 #  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
