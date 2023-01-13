@@ -8,14 +8,14 @@ all:
 
         gcp_zone: us-central1-a
         gcp_image_type: ubuntu_containerd
-        gcp_machine_type: e2-medium # Can be changed if necessary
+        gcp_machine_type: e2-highcpu-2	 # Can be changed if necessary
         gcp_disk_size_gb: 100 # Can be changed if necessary
         gcp_initial_node_count: 2 # Number of nodes to create. Can be changed if necessary
 
         # APP variables
-        ghost_ip: 34.136.137.6
+        ghost_ip: 35.232.102.224
         ghost_port: 80
 
 
         # Additional variables
-        gcp_cluster_name: cluster-ascn2 # Cluster's name
+        gcp_cluster_name: high-cluster-ascn # Cluster's name
