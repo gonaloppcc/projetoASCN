@@ -16,6 +16,10 @@
     path: "{{ k8s_files_path }}"
     state: absent
 
+- name: Print delete_data variable
+  debug:
+    msg: "{{ delete_data }}"
+
 - name: Deleting Persistent Volume Claim
   k8s:
     name: mysql-pv-claim
@@ -23,4 +27,4 @@
     kind: PersistentVolumeClaim
     state: absent
     wait: yes
-  when: delete_data is defined and delete_data == true
+  when: delete_data is defined and {{ delete_data }} == true
