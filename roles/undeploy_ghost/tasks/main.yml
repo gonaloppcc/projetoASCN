@@ -1,12 +1,9 @@
 ---
+
+
 - name: Unploying Ghost and MySQL
   shell:
     kubectl delete all --all -n {{ k8s_namespace }}
-
-- name: Update kubernettes
-  pip:
-    name:
-      - kubernetes==12.0.0
 
 - name: Deleting namespace
   k8s:
@@ -28,4 +25,5 @@
     kind: PersistentVolumeClaim
     state: absent
     wait: yes
-  when: delete_data is defined and delete_data == true
+  when: delete_data is defined and {{ delete_data }} == true
+

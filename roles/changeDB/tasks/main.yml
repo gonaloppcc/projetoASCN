@@ -38,55 +38,65 @@
 #  shell: kubectl exec -it {{pod_db}} -- mysql -Ns -e "use ghost; SELECT * FROM users;"
 #  register: output
 
+#- name: Install Openshift
+#  pip:
+#    name:
+#      - openshift==0.11.2
+ 
 
-- name: Install stuff
-  shell: pip3 install -Iv openshift==0.11.2
+#- name: Install stuff
+#  shell: pip3 install -Iv openshift==0.11.2
 
 # Caso dê erro, usar isto :)
 # https://stackoverflow.com/questions/66454603/get-list-of-k8s-pod-using-ansible
-- name: Get Users
-  community.kubernetes.k8s_exec:
-    namespace: "{{k8s_namespace}}"
-    pod: "{{pod_db}}"
-    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
-    #command: echo "Hello"
-  register: answer
+#- name: Get Users
+#  kubernetes.core.k8s_exec:
+#    namespace: "{{k8s_namespace}}"
+#    pod: "{{pod_db}}"
+#    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+#    #command: echo "Hello"
+#  register: answer
 
-- debug: msg="{{ answer.stdout_lines }}"
+#- debug: msg="{{ answer.stdout_lines }}"
 
 #- debug:
 #    msg: "matched pattern 1"
 #  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user\t/\w+\tascn@example.com/\w+")
   
-- name: Check if user is in DB
-  fail:
-    msg: Username not found
-  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user")
+#- name: Check if user is in DB
+  #fail:
+  #  msg: Username not found
+  #when: answer.stdout_lines[0] is not regex('1\t{{first_blog_admin.name | string }}\tghost-user')
   
 # Não dá para inserir um user, temos de dar um id, e isso é mau, porque podemos alterar um user já registado.
 # Depois pode-se meter com método de post, caso exista :)
 - name: Change user
-  community.kubernetes.k8s_exec:
+  kubernetes.core.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
-    command: mysql -Ns -e "use {{ app_db_name }};update users set name='TEST' where id=1;" 
+    command: mysql -Ns -e "use {{ app_db_name }};update users set name='{{test_name}}' where id=1;" 
     #command: echo "Hello"
 
 #
  
 - name: Check DB
-  community.kubernetes.k8s_exec:
+  kubernetes.core.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
     command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
   register: answer
 
-- debug: msg="{{ answer.stdout_lines }}"
+- debug: msg="{{ answer.stdout_lines[0] }}"
 
 - name: Check if user was changed
-  fail:
-    msg: Change not ocurred
-  when: answer.stdout_lines is regex("1\tTEST")
+  assert:
+    that: 
+      'test_name in answer.stdout_lines[0]'
+
+#- name: Check if user was changed
+#  fail:
+#    msg: Change not ocurred
+#  when: 'answer.stdout_lines[0] in test_name | string'
 
 
 

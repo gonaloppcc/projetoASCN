@@ -29,9 +29,8 @@
 #  register: output
 
 
- 
 - name: Check DB
-  community.kubernetes.k8s_exec:
+  kubernetes.core.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
     command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
@@ -39,7 +38,8 @@
 
 - debug: msg="{{ answer.stdout_lines }}"
 
+
 - name: Check if user was changed
-  fail:
-    msg: Change not ocurred
-  when: answer.stdout_lines is regex("1\tTEST")
+  assert:
+    that: 
+      'test_name in answer.stdout_lines[0]'

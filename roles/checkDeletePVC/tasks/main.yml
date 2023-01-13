@@ -31,7 +31,7 @@
 # Caso dê erro, usar isto :)
 # https://stackoverflow.com/questions/66454603/get-list-of-k8s-pod-using-ansible
 - name: Get if Admin is back to normal
-  community.kubernetes.k8s_exec:
+  kubernetes.core.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
     command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
@@ -44,10 +44,10 @@
 #    msg: "matched pattern 1"
 #  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user\t/\w+\tascn@example.com/\w+")
   
-- name: Check if user is in DB
-  fail:
-    msg: Username not found
-  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user")
+- name: Check if user was changed
+  assert:
+    that: 
+      'first_blog_admin.name in answer.stdout_lines[0]'
  
 - name: Check that you can connect (GET) to Ghost and it returns a status 200
   ansible.builtin.uri:

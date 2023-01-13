@@ -1,5 +1,6 @@
 ---
-- name: Install pre-requisites2
+
+- name: Install pre-requisites
   pip:
     name:
       - kubernetes==12.0.0

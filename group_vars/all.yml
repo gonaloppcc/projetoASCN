@@ -18,3 +18,7 @@ first_blog_admin:
     name: ascn
     password: ascn123
     email: ascn@example.com
+
+
+test_name: TEST
+test_name1: TAST

@@ -18,7 +18,39 @@
   set_fact:
     password_hash: '{{ password_hash.stdout | replace("$", "\$") }}'
 
-- name: Add Blog Admin to MySQL Database
-  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
 
+- name: Get users table
+  kubernetes.core.k8s_exec:
+    namespace: "{{ k8s_namespace }}"
+    pod: "{{ mysql_pod_name }}"
+    command: "mysql -Ns -u {{ app_db_user }} -p{{ app_db_password }} -e \"SELECT * FROM {{ app_db_name }}.users where id=1;\""
+  register: users_table
+
+- name: Print Users table
+  debug:
+    msg: "{{ users_table.stdout }}"
+
+
+- name: Insert in DB  
+  kubernetes.core.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{ mysql_pod_name }}"
+    command: mysql -Ns -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;" 
+  when: users_table.stdout_lines | users_table.stdout_lines > 0 
+
+#- name: Add Blog Admin to MySQL Database
+#  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
+
+
+# Depois apagar, é para ver como fica a DB
+- name: Get users table
+  kubernetes.core.k8s_exec:
+    namespace: "{{ k8s_namespace }}"
+    pod: "{{ mysql_pod_name }}"
+    command: "mysql -Ns -u {{ app_db_user }} -p{{ app_db_password }} -e \"SELECT * FROM {{ app_db_name }}.users where id=1;\""
+  register: users_table
+
+- name: Print Users table
+  debug:
+    msg: "{{ users_table.stdout }}"
 
