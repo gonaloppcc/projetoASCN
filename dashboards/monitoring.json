@@ -1,58 +1,70 @@
 {
-    "name": "Monitor",
-    "displayName": "Monitor",
-    "gridLayout": {
-      "columns": 2, 
-      "widgets": [
-        {
-          "xyChart": {        
-              "datasets": [
-                {
-                    "timeSeriesQuery": {
-                        "apiSource": "DEFAULT_CLOUD",                    
-                        "timeSeriesFilter": {
-                            "filter": ".............",
-                            "aggregation": {
-                                "alignmentPeriod": "60s",
-                                "perSeriesAligner": "ALIGN_COUNT",  
-                                "crossSeriesReducer": "REDUCE_NONE"
-                            },
-                            "secondaryAggregation": {
-                                "alignmentPeriod": "60s",
-                                "perSeriesAligner": "ALIGN_COUNT",
-                                "crossSeriesReducer": "REDUCE_NONE"
-                            },
-                            "pickTimeSeriesFilter": {
-                                "rankingMethod": "METHOD_MEAN",
-                                "numTimeSeries": 10,
-                                "direction": "BOTTOM"
-                            }
-                        }
-                    },
-                    "plotType": "STACKED_AREA",
-                    "legendTemplate": "CPU",
-                    "minAlignmentPeriod": "60s",
-                    "targetAxis": "TARGET_AXIS_UNSPECIFIED"
-                }
-              ],
-              "thresholds": [],
-              "xAxis": {
-                "label": "xAxis",
-                "scale": "LINEAR"
-              },
-              "yAxis": {
-                "label": "yAxis",
-                "scale": "LINEAR"
-              },
-              "y2Axis": {
-                "label": "y2Axis",
-                "scale": "LINEAR"
-              },
-              "chartOptions": {
-                "mode": "COLOR"
+  "category": "CUSTOM",
+  "dashboardFilters": [],
+  "displayName": "New Dashboard - Jan 12, 2023 23:44",
+  "labels": {},
+  "mosaicLayout": {
+    "columns": 12,
+    "tiles": [
+      {
+        "height": 2,
+        "widget": {
+          "scorecard": {
+            "sparkChartView": {
+              "sparkChartType": "SPARK_BAR"
+            },
+            "thresholds": [],
+            "timeSeriesQuery": {
+              "apiSource": "DEFAULT_CLOUD",
+              "timeSeriesFilter": {
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": [],
+                  "perSeriesAligner": "ALIGN_MEAN"
+                },
+                "filter": "metric.type=\"compute.googleapis.com/instance/cpu/utilization\" resource.type=\"gce_instance\" metadata.system_labels.\"machine_type\"=\"e2-medium\""
               }
             }
-          }
-      ]
-    }
+          },
+          "title": "VM Instance - CPU utilization for e2-medium [MEAN]"
+        },
+        "width": 4,
+        "xPos": 0,
+        "yPos": 0
+      },
+      {
+        "height": 2,
+        "widget": {
+          "scorecard": {
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            },
+            "thresholds": [],
+            "timeSeriesQuery": {
+              "apiSource": "DEFAULT_CLOUD",
+              "timeSeriesFilter": {
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "crossSeriesReducer": "REDUCE_NONE",
+                  "perSeriesAligner": "ALIGN_RATE"
+                },
+                "filter": "metric.type=\"compute.googleapis.com/instance/cpu/usage_time\" resource.type=\"gce_instance\"",
+                "secondaryAggregation": {
+                  "alignmentPeriod": "60s",
+                  "crossSeriesReducer": "REDUCE_MEAN",
+                  "groupByFields": [],
+                  "perSeriesAligner": "ALIGN_MEAN"
+                }
+              }
+            }
+          },
+          "title": "VM Instance - CPU usage [MEAN]"
+        },
+        "width": 4,
+        "xPos": 0,
+        "yPos": 2
+      }
+    ]
+  }
 }
