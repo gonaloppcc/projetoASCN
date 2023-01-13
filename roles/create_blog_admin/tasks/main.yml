@@ -22,6 +22,17 @@
   pause:
     seconds: 30
 
+- name: Get users table before add blog admin
+  kubernetes.core.k8s_exec:
+    namespace: "{{ k8s_namespace }}"
+    pod: "{{ mysql_pod_name }}"
+    command: "mysql -Ns -u {{ app_db_user }} -p{{ app_db_password }} -e \"SELECT * FROM {{ app_db_name }}.users ;\""
+  register: old_users_table
+
+- name: Print Users table before update
+  debug:
+    msg: "{{ old_users_table.stdout }}"
+
 - name: Add Blog Admin to MySQL Database
   kubernetes.core.k8s_exec:
     namespace: "{{ k8s_namespace }}"
@@ -31,11 +42,12 @@
   until: "mysql_update is not failed"
   retries: 10
   delay: 10
+  #when: old_users_table | length == 0
 
 - name: Print the error output and stop the execution of the playbook
   debug:
     var: mysql_update
-  when: mysql_update.failed
+  when: old_users_table | length == 0 and mysql_update.failed
   failed_when: True
 
 - name: Get users table
@@ -54,4 +66,5 @@
   assert:
     that:
       users_table.stdout_lines[0] is regex("1.*{{ first_blog_admin.name }}.*{{ password_hash }}.*{{ first_blog_admin.email }}.*active")
+  #when: old_users_table | length == 0
 

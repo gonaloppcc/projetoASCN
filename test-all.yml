@@ -1,13 +1,13 @@
 ---
 # Playbook to test the full deployment of Ghost (from creation to destruction)
 
-#- import_playbook: deploy-ghost.yml
+- import_playbook: deploy-ghost.yml
 
 - name: Change DB
   hosts: localhost
   gather_facts: true
   roles:
-    - { role: create_blog_admin }
+#    - { role: create_blog_admin }
     - { role: changeDB }
 
 - import_playbook: undeploy-ghost.yml
