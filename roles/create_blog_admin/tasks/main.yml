@@ -19,18 +19,26 @@
     password_hash: '{{ password_hash.stdout | replace("$", "\$") }}'
 
 - name: Add Blog Admin to MySQL Database
-  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }};update users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;"
+  kubernetes.core.k8s_exec:
+    namespace: "{{ k8s_namespace }}"
+    pod: "{{ mysql_pod_name }}"
+    command: "mysql -u {{ app_db_user }} -p{{ app_db_password }} -e \"UPDATE {{ app_db_name }}.users set name='{{ first_blog_admin.name }}', password='{{ password_hash }}', email='{{ first_blog_admin.email }}', status='active' where id=1;\""
+    wait: yes
 
-- name: Verify that Blog Admin is updated
-  shell: kubectl exec -it pod/{{ mysql_pod_name }} -- mysql -e "use {{ app_db_name }}; select * from users;"
+- name: Get users table
+  kubernetes.core.k8s_exec:
+    namespace: "{{ k8s_namespace }}"
+    pod: "{{ mysql_pod_name }}"
+    command: "mysql -Ns -u {{ app_db_user }} -p{{ app_db_password }} -e \"SELECT * FROM {{ app_db_name }}.users where id=1;\""
   register: users_table
 
-- name: See Users table
+- name: Print Users table
   debug:
     msg: "{{ users_table.stdout }}"
 
-- name: See Users table
-  debug:
-    msg: "{{ users_table.stderr }}"
 
+- name: Verify that Blog Admin is updated
+  assert:
+    that:
+      users_table.stdout_lines[0] is regex("1.*{{ first_blog_admin.name }}.*{{ password_hash }}.*{{ first_blog_admin.email }}.*active")
 
