@@ -42,7 +42,7 @@
   until: "mysql_update is not failed"
   retries: 10
   delay: 10
-  #when: old_users_table | length == 0
+  when: old_users_table | length == 0
 
 - name: Print the error output and stop the execution of the playbook
   debug:
@@ -66,5 +66,5 @@
   assert:
     that:
       users_table.stdout_lines[0] is regex("1.*{{ first_blog_admin.name }}.*{{ password_hash }}.*{{ first_blog_admin.email }}.*active")
-  #when: old_users_table | length == 0
+  when: old_users_table | length == 0
 
