@@ -39,6 +39,8 @@ spec:
               value: {{ mail_options_auth_user }}
             - name: mail__options__auth__pass
               value: {{ mail_options_auth_pass }}
+            - name: url
+              value: "http://{{ ghost_ip }}:{{ghost_port}}/"
 
           ports:
             - containerPort: 2368
