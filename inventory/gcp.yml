@@ -18,4 +18,4 @@ all:
 
 
     # Additional variables
-    gcp_cluster_name: high-cluster-ascn # Cluster's name
+    gcp_cluster_name: cluster-ascn3 # Cluster's name
