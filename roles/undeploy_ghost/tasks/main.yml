@@ -13,7 +13,7 @@
 
 - name: Deleting temporary folder
   file:
-    path: "{{ k8s_files_path }}"
+    path: "{{ tmp_folder_path }}"
     state: absent
 
 - name: Deleting Persistent Volume Claim

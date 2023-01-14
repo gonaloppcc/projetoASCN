@@ -2,32 +2,32 @@
 - name: Create MySQL deployment file
   template:
     src: mysql-deployment
-    dest: "{{ k8s_files_path }}/mysql-deployment.yml"
+    dest: "{{ tmp_folder_path }}/mysql-deployment.yml"
 
 - name: Create MySQL pvc file
   template:
     src: mysql-pvc
-    dest: "{{ k8s_files_path }}/mysql-pvc.yml"
+    dest: "{{ tmp_folder_path }}/mysql-pvc.yml"
 
 - name: Create MySQL service file
   template:
     src: mysql-service
-    dest: "{{ k8s_files_path }}/mysql-service.yml"
+    dest: "{{ tmp_folder_path }}/mysql-service.yml"
 
 - name: Add MySQL Persistent Volume Claim
   k8s:
     state: present
-    src: "{{ k8s_files_path }}/mysql-pvc.yml"
+    src: "{{ tmp_folder_path }}/mysql-pvc.yml"
     wait: yes
 
 - name: Deploy MySQL
   k8s:
     state: present
-    src: "{{ k8s_files_path }}/mysql-deployment.yml"
+    src: "{{ tmp_folder_path }}/mysql-deployment.yml"
     wait: yes
 
 - name: Deploy MySQL Service
   k8s:
     state: present
-    src: "{{ k8s_files_path }}/mysql-service.yml"
+    src: "{{ tmp_folder_path }}/mysql-service.yml"
     wait: yes

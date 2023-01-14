@@ -16,7 +16,7 @@
 
 - name: Create temporary folder
   file:
-    path: tmp
+    path: "{{ tmp_folder_path }}"
     state: directory
 
 - name: Set Namespace Preference

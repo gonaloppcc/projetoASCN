@@ -9,10 +9,10 @@
 - name: Create jmeter workload file
   template:
     src: workload
-    dest: "{{ k8s_files_path }}/workload.jmx"
+    dest: "{{ tmp_folder_path }}/workload.jmx"
 
 - name: Run jmeter workload with {{ thread_num }} threads
-  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
+  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
   register: jmeter_output
 
 - name: Change thread number to 100
@@ -20,7 +20,7 @@
       thread_num: 100
 
 - name: Run jmeter workload with {{ thread_num }} threads
-  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
+  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
   register: jmeter_output
 
 - name: Change thread number to 500
@@ -28,5 +28,5 @@
     thread_num: 500
 
 - name: Run jmeter workload with {{ thread_num }} threads
-  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
+  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
   register: jmeter_output

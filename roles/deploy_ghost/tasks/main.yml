@@ -2,12 +2,12 @@
 - name: Create Ghost service file
   template:
     src: ghost-service
-    dest: '{{ k8s_files_path }}/ghost-service.yml'
+    dest: '{{ tmp_folder_path }}/ghost-service.yml'
 
 - name: Deploy Ghost Service
   k8s:
     state: present
-    src: '{{ k8s_files_path }}/ghost-service.yml'
+    src: '{{ tmp_folder_path }}/ghost-service.yml'
     wait: yes
 
 - name: Get Ghost service
@@ -40,10 +40,10 @@
 - name: Create Ghost deployment file
   template:
     src: ghost-deployment
-    dest: '{{ k8s_files_path }}/ghost-deployment.yml'
+    dest: '{{ tmp_folder_path }}/ghost-deployment.yml'
 
 - name: Deploy Ghost
   k8s:
     state: present
-    src: '{{ k8s_files_path }}/ghost-deployment.yml'
+    src: '{{ tmp_folder_path }}/ghost-deployment.yml'
     wait: yes
