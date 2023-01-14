@@ -24,6 +24,7 @@
 - name: Deleting Persistent Volume Claim
   k8s:
     name: mysql-pv-claim
+    namespace: "{{ k8s_namespace }}"
     api_version: v1
     kind: PersistentVolumeClaim
     state: absent
