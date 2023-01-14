@@ -3,13 +3,18 @@
   shell:
     kubectl delete all --all -n {{ k8s_namespace }}
 
-- name: Deleting namespace
-  k8s:
-    name: "{{ k8s_namespace }}"
-    api_version: v1
-    kind: Namespace
-    state: absent
-    wait: yes
+#- name: Deleting Deployments and services in the namespace
+#  k8s:
+#    name: "{{ item }}"
+#    api_version: v1
+#    kind: Namespace
+#    state: absent
+#    wait: yes
+#  loop:
+#    - "mysql-deployment"
+#    - "mysql-service"
+#    - "ghost-deployment"
+#    - "ghost-service"
 
 - name: Deleting temporary folder
   file:
