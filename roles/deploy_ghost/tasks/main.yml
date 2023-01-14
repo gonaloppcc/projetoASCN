@@ -33,7 +33,7 @@
   lineinfile:
     dest: 'inventory/gcp.yml'
     regexp: 'ghost_ip: .*'
-    line: '        ghost_ip: {{ ghost_ip }}'
+    line: '    ghost_ip: {{ ghost_ip }}'
     state: present
     backrefs: yes
 

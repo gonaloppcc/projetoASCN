@@ -1,3 +1,2 @@
 thread_num: 1000
-constant_timer_delay: 300 # In milliseconds
-path: /
+endpoint_path: /
