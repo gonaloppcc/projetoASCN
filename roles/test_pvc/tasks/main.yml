@@ -17,37 +17,12 @@
 
 - debug: msg="{{ pod_db}}"
 
-# Caso dê erro, usar isto :)
-# https://stackoverflow.com/questions/66454603/get-list-of-k8s-pod-using-ansible
-#- name: Get Users
-#  kubernetes.core.k8s_exec:
-#    namespace: "{{k8s_namespace}}"
-#    pod: "{{pod_db}}"
-#    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
-#    #command: echo "Hello"
-#  register: answer
 
-#- debug: msg="{{ answer.stdout_lines }}"
-
-#- debug:
-#    msg: "matched pattern 1"
-#  when: answer.stdout_lines[0] is not regex("1\tascn\tghost-user\t/\w+\tascn@example.com/\w+")
-  
-#- name: Check if user is in DB
-  #fail:
-  #  msg: Username not found
-  #when: answer.stdout_lines[0] is not regex('1\t{{first_blog_admin.name | string }}\tghost-user')
-  
-# Não dá para inserir um user, temos de dar um id, e isso é mau, porque podemos alterar um user já registado.
-# Depois pode-se meter com método de post, caso exista :)
 - name: Change user
   kubernetes.core.k8s_exec:
     namespace: "{{k8s_namespace}}"
     pod: "{{pod_db}}"
     command: mysql -Ns -e "use {{ app_db_name }};update users set name='{{test_name}}' where id=1;" 
-    #command: echo "Hello"
-
-#
  
 - name: Check DB
   kubernetes.core.k8s_exec:
@@ -67,4 +42,40 @@
       name: undeploy_ghost
 
 - ansible.builtin.import_role:
-      name: deploy_ghost
+    name: setup
+- ansible.builtin.import_role:
+    name: deploy_mysql
+- ansible.builtin.import_role:
+    name: deploy_ghost
+
+- name: Get pod name
+  kubernetes.core.k8s_info:
+    kind: Pod
+    label_selectors:
+      - tier in (database)
+  register: pod_db
+
+
+- name: Change pod name variable
+  set_fact:
+    pod_db: '{{ pod_db.resources[0].metadata.name }}'
+
+- debug: msg="{{ pod_db}}"
+
+- name: Check DB
+  kubernetes.core.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+  register: answer
+
+- debug: msg="{{ answer.stdout_lines }}"
+
+
+- name: Check if user was changed
+  assert:
+    that: 
+      'test_name in answer.stdout_lines[0]'
+  
+
+

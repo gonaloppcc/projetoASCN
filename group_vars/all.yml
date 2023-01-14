@@ -18,3 +18,4 @@ n_replicas: 3
 
 # Used to test pvc
 test_name: TEST
+test_admin_name: ascn
