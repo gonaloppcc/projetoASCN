@@ -29,9 +29,9 @@
           },
           "title": "VM Instance - CPU utilization for e2-medium [MEAN]"
         },
-        "width": 4,
+        "width": 3,
         "xPos": 0,
-        "yPos": 0
+        "yPos": 2
       },
       {
         "height": 2,
@@ -61,9 +61,208 @@
           },
           "title": "VM Instance - CPU usage [MEAN]"
         },
-        "width": 4,
+        "width": 3,
         "xPos": 0,
-        "yPos": 2
+        "yPos": 4
+      },
+      {
+        "height": 3,
+        "widget": {
+          "title": "VM Memory Used [MEAN]",
+          "xyChart": {
+            "chartOptions": {
+              "mode": "COLOR"
+            },
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "plotType": "STACKED_AREA",
+                "targetAxis": "Y2",
+                "timeSeriesQuery": {
+                  "apiSource": "DEFAULT_CLOUD",
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    },
+                    "filter": "metric.type=\"compute.googleapis.com/instance/memory/balloon/ram_used\" resource.type=\"gce_instance\"",
+                    "secondaryAggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_NONE"
+                    }
+                  }
+                }
+              }
+            ],
+            "thresholds": [],
+            "timeshiftDuration": "0s",
+            "y2Axis": {
+              "label": "y2Axis",
+              "scale": "LINEAR"
+            }
+          }
+        },
+        "width": 4,
+        "xPos": 3,
+        "yPos": 0
+      },
+      {
+        "height": 3,
+        "widget": {
+          "title": "VM Instance - Sent bytes [MEAN]",
+          "xyChart": {
+            "chartOptions": {
+              "mode": "COLOR"
+            },
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "plotType": "LINE",
+                "targetAxis": "Y2",
+                "timeSeriesQuery": {
+                  "apiSource": "DEFAULT_CLOUD",
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_RATE"
+                    },
+                    "filter": "metric.type=\"compute.googleapis.com/instance/network/sent_bytes_count\" resource.type=\"gce_instance\"",
+                    "secondaryAggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                }
+              }
+            ],
+            "thresholds": [],
+            "timeshiftDuration": "0s",
+            "y2Axis": {
+              "label": "y2Axis",
+              "scale": "LINEAR"
+            }
+          }
+        },
+        "width": 5,
+        "xPos": 7,
+        "yPos": 0
+      },
+      {
+        "height": 3,
+        "widget": {
+          "title": "VM Instance - Received bytes [MEAN]",
+          "xyChart": {
+            "chartOptions": {
+              "mode": "COLOR"
+            },
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "plotType": "LINE",
+                "targetAxis": "Y2",
+                "timeSeriesQuery": {
+                  "apiSource": "DEFAULT_CLOUD",
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_RATE"
+                    },
+                    "filter": "metric.type=\"compute.googleapis.com/instance/network/received_bytes_count\" resource.type=\"gce_instance\"",
+                    "secondaryAggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_MEAN"
+                    }
+                  }
+                }
+              }
+            ],
+            "thresholds": [],
+            "timeshiftDuration": "0s",
+            "y2Axis": {
+              "label": "y2Axis",
+              "scale": "LINEAR"
+            }
+          }
+        },
+        "width": 5,
+        "xPos": 7,
+        "yPos": 3
+      },
+      {
+        "height": 3,
+        "widget": {
+          "title": "RTT latencies per GKE Pod [50TH PERCENTILE]",
+          "xyChart": {
+            "chartOptions": {
+              "mode": "COLOR"
+            },
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "plotType": "LINE",
+                "targetAxis": "Y1",
+                "timeSeriesQuery": {
+                  "apiSource": "DEFAULT_CLOUD",
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_PERCENTILE_50"
+                    },
+                    "filter": "metric.type=\"networking.googleapis.com/pod_flow/rtt\" resource.type=\"k8s_pod\"",
+                    "secondaryAggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_NONE",
+                      "perSeriesAligner": "ALIGN_NONE"
+                    }
+                  }
+                }
+              }
+            ],
+            "thresholds": [],
+            "timeshiftDuration": "0s",
+            "yAxis": {
+              "label": "y1Axis",
+              "scale": "LINEAR"
+            }
+          }
+        },
+        "width": 4,
+        "xPos": 3,
+        "yPos": 3
+      },
+      {
+        "height": 2,
+        "widget": {
+          "scorecard": {
+            "sparkChartView": {
+              "sparkChartType": "SPARK_LINE"
+            },
+            "thresholds": [],
+            "timeSeriesQuery": {
+              "apiSource": "DEFAULT_CLOUD",
+              "timeSeriesFilter": {
+                "aggregation": {
+                  "alignmentPeriod": "60s",
+                  "crossSeriesReducer": "REDUCE_SUM",
+                  "groupByFields": [],
+                  "perSeriesAligner": "ALIGN_MEAN"
+                },
+                "filter": "metric.type=\"compute.googleapis.com/instance_group/size\" resource.type=\"instance_group\""
+              }
+            }
+          },
+          "title": "Instance group size [SUM]"
+        },
+        "width": 3,
+        "xPos": 0,
+        "yPos": 0
       }
     ]
   }
