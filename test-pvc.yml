@@ -1,0 +1,11 @@
+---
+
+# Playbook to test the persistent memory
+- import_playbook: deploy-ghost.yml
+
+- name: Tests
+  hosts: localhost
+  gather_facts: true
+  roles:
+    - { role: test_pvc }
+
