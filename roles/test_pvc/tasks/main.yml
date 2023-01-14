@@ -1,0 +1,81 @@
+---
+
+- name: Refresh inventory
+  meta: refresh_inventory
+
+- name: Get pod name
+  kubernetes.core.k8s_info:
+    kind: Pod
+    label_selectors:
+      - tier in (database)
+  register: pod_db
+
+
+- name: Change pod name variable
+  set_fact:
+    pod_db: '{{ pod_db.resources[0].metadata.name }}'
+
+- debug: msg="{{ pod_db}}"
+
+
+- name: Change user
+  kubernetes.core.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }};update users set name='{{test_name}}' where id=1;" 
+ 
+- name: Check DB
+  kubernetes.core.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+  register: answer
+
+- debug: msg="{{ answer.stdout_lines[0] }}"
+
+- name: Check if user was changed
+  assert:
+    that: 
+      'test_name in answer.stdout_lines[0]'
+
+- ansible.builtin.import_role:
+      name: undeploy_ghost
+
+- ansible.builtin.import_role:
+    name: setup
+- ansible.builtin.import_role:
+    name: deploy_mysql
+- ansible.builtin.import_role:
+    name: deploy_ghost
+
+- name: Get pod name
+  kubernetes.core.k8s_info:
+    kind: Pod
+    label_selectors:
+      - tier in (database)
+  register: pod_db
+
+
+- name: Change pod name variable
+  set_fact:
+    pod_db: '{{ pod_db.resources[0].metadata.name }}'
+
+- debug: msg="{{ pod_db}}"
+
+- name: Check DB
+  kubernetes.core.k8s_exec:
+    namespace: "{{k8s_namespace}}"
+    pod: "{{pod_db}}"
+    command: mysql -Ns -e "use {{ app_db_name }}; SELECT * FROM users;" 
+  register: answer
+
+- debug: msg="{{ answer.stdout_lines }}"
+
+
+- name: Check if user was changed
+  assert:
+    that: 
+      'test_name in answer.stdout_lines[0]'
+  
+
+

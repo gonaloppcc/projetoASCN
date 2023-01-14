@@ -15,3 +15,7 @@ mail_options_auth_user: postmaster@sandbox49d1543ba9ca4600a82b8e8827de916f.mailg
 mail_options_auth_pass: 8ea1b9f57c51e302d948726dd5bbba2a-c2efc90c-d3f66810
 
 n_replicas: 3
+
+# Used to test pvc
+test_name: TEST
+test_admin_name: ascn

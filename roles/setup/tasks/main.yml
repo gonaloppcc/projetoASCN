@@ -27,5 +27,3 @@
     src: ghost-monitoring
     dest: "{{ tmp_folder_path }}/ghost-monitoring.json"
 
-- name: Add Dashboard
-  shell: "gcloud monitoring dashboards create --config-from-file='{{ tmp_folder_path }}/ghost-monitoring.json'"
