@@ -6,6 +6,7 @@ app_db_password: password # Careful this should be using VAULT!!!!
 
 k8s_namespace: ghost
 
+tmp_folder_path: tmp # Should be in a relative path to the project folder
 k8s_files_path: tmp # Should be in a relative path to the project folder
 
 mail_transport: SMTP
@@ -22,3 +23,5 @@ first_blog_admin:
 
 test_name: TEST
 test_name1: TAST
+
+n_replicas: 3
