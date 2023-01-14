@@ -1,21 +1,21 @@
 ---
 all:
-    vars:
-        # GKE cluster variables
-        gcp_project: projetoascn # ID of GCP Project
-        gcp_auth_kind: serviceaccount # Do not change
-        gcp_cred_file: keys.json # Path to service account keys (json file downloaded from GCP)
+  vars:
+    # GKE cluster variables
+    gcp_project: projetoascn # ID of GCP Project
+    gcp_auth_kind: serviceaccount # Do not change
+    gcp_cred_file: keys.json # Path to service account keys (json file downloaded from GCP)
 
-        gcp_zone: us-central1-a
-        gcp_image_type: ubuntu_containerd
-        gcp_machine_type: e2-medium # Can be changed if necessary
-        gcp_disk_size_gb: 100 # Can be changed if necessary
-        gcp_initial_node_count: 2 # Number of nodes to create. Can be changed if necessary
+    gcp_zone: us-central1-a
+    gcp_image_type: ubuntu_containerd
+    gcp_machine_type: e2-highcpu-2     # Can be changed if necessary
+    gcp_disk_size_gb: 100 # Can be changed if necessary
+    gcp_initial_node_count: 2 # Number of nodes to create. Can be changed if necessary
 
-        # APP variables
-        ghost_ip: 35.205.123.107
-        ghost_port: 80
+    # APP variables
+    ghost_ip: 34.171.41.114
+    ghost_port: 80
 
 
-        # Additional variables
-        gcp_cluster_name: cluster-ascn4 # Name of the cluster
+    # Additional variables
+    gcp_cluster_name: high-cluster-ascn # Cluster's name

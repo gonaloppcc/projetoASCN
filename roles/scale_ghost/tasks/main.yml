@@ -1,0 +1,4 @@
+---
+# Pass replica count with parameter --extra-vars "replica_count=4"
+- name: Scale deployment
+  command: kubectl scale deployment ghost-deployment --replicas={{ replica_count }}
