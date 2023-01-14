@@ -13,9 +13,9 @@ all:
         gcp_initial_node_count: 2 # Number of nodes to create. Can be changed if necessary
 
         # APP variables
-        ghost_ip: 35.184.247.10
+        ghost_ip: 35.205.123.107
         ghost_port: 80
 
 
         # Additional variables
-        gcp_cluster_name: cluster-ascn # Name of the cluster
+        gcp_cluster_name: cluster-ascn4 # Name of the cluster
