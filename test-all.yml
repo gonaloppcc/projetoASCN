@@ -20,3 +20,11 @@
     - { role: test_ghost }
 
 - import_playbook: undeploy-ghost.yml delete_data='true'
+
+- import_playbook: deploy-ghost.yml
+
+- name: Workloads
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - { role: workloads }

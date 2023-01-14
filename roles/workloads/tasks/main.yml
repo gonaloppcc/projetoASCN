@@ -14,7 +14,6 @@
 - name: Run jmeter workload with {{ thread_num }} threads
   shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
   register: jmeter_output
-  changed_when: false
 
 - name: Change thread number to 100
   set_fact:
@@ -23,7 +22,6 @@
 - name: Run jmeter workload with {{ thread_num }} threads
   shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
   register: jmeter_output
-  changed_when: false
 
 - name: Change thread number to 500
   set_fact:
@@ -32,4 +30,3 @@
 - name: Run jmeter workload with {{ thread_num }} threads
   shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ k8s_files_path }}/workload.jmx -l {{ k8s_files_path }}/results.jtl"
   register: jmeter_output
-  changed_when: false
