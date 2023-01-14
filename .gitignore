@@ -9,3 +9,6 @@ keys.json
 
 # Temporary files
 /tmp
+
+# Log files
+*.log
