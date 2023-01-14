@@ -19,9 +19,9 @@
   pause:
     seconds: 10
 
-- name: Change thread number to 100
+- name: Change thread number to 10000
   set_fact:
-    thread_num: 100
+    thread_num: 5000
 
 - name: Run jmeter workload with {{ thread_num }} threads
   shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
@@ -31,9 +31,25 @@
   pause:
     seconds: 120
 
-- name: Change thread number to 500
+- name: Change thread number to 50000
   set_fact:
-    thread_num: 500
+    thread_num: 50000
+
+- name: Run jmeter workload with {{ thread_num }} threads
+  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
+  register: jmeter_output
+
+- name: Change thread number to 50000
+  set_fact:
+    thread_num: 50000
+
+- name: Run jmeter workload with {{ thread_num }} threads
+  shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"
+  register: jmeter_output
+
+- name: Change thread number to 100000
+  set_fact:
+    thread_num: 100000
 
 - name: Run jmeter workload with {{ thread_num }} threads
   shell: "./jmeter/apache-jmeter-5.5/bin/jmeter -n -t {{ tmp_folder_path }}/workload.jmx -l {{ tmp_folder_path }}/results.jtl"

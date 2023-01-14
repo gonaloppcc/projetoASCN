@@ -1,0 +1,6 @@
+---
+- name: Workloads
+  hosts: localhost
+  gather_facts: yes
+  roles:
+    - { role: workloads }
