@@ -1,0 +1,6 @@
+---
+- name: Scale Ghost
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - scale_ghost

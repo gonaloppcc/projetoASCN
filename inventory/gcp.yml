@@ -13,9 +13,17 @@ all:
         gcp_initial_node_count: 2 # Number of nodes to create. Can be changed if necessary
 
         # APP variables
+<<<<<<< Updated upstream
         ghost_ip: 35.222.43.190
+=======
+        ghost_ip: 35.226.108.39
+>>>>>>> Stashed changes
         ghost_port: 80
 
 
         # Additional variables
+<<<<<<< Updated upstream
         gcp_cluster_name: high-cluster-ascn # Cluster's name
+=======
+        gcp_cluster_name: cluster-ascn3 # Cluster's name
+>>>>>>> Stashed changes
