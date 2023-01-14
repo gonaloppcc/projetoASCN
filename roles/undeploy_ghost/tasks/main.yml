@@ -16,9 +16,10 @@
     path: "{{ k8s_files_path }}"
     state: absent
 
-#- name: Print delete_data variable
-#  debug:
-#    msg: "{{ delete_data }}"
+- name: Print delete_data variable
+  debug:
+    msg: "{{ k8s_namespace }}"
+  when: delete_data is defined and {{ delete_data }} == true
 
 - name: Deleting Persistent Volume Claim
   k8s:
@@ -27,4 +28,8 @@
     kind: PersistentVolumeClaim
     state: absent
     wait: yes
+  when: delete_data is defined and {{ delete_data }} == true
+
+- name: Deleting Persistent Volume Claim
+  shell: 
   when: delete_data is defined and {{ delete_data }} == true

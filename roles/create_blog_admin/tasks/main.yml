@@ -20,7 +20,7 @@
 
 - name: Waiting for migrations to run
   pause:
-    seconds: 30
+    seconds: 10
 
 - name: Get users table before add blog admin
   kubernetes.core.k8s_exec:
@@ -33,6 +33,10 @@
   debug:
     msg: "{{ old_users_table.stdout }}"
 
+- name: Check add db name
+  debug:
+    msg: "{{ first_blog_admin.name }}"
+
 - name: Add Blog Admin to MySQL Database
   kubernetes.core.k8s_exec:
     namespace: "{{ k8s_namespace }}"
@@ -42,7 +46,7 @@
   until: "mysql_update is not failed"
   retries: 10
   delay: 10
-  when: old_users_table | length == 0
+  when: first_blog_admin.name + '\t' not in old_users_table.stdout 
 
 - name: Print the error output and stop the execution of the playbook
   debug:
