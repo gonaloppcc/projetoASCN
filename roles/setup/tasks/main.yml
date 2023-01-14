@@ -21,3 +21,9 @@
 
 - name: Set Namespace Preference
   shell: kubectl config set-context --current --namespace={{ k8s_namespace }}
+
+#- name: Download and unpack JMeter
+#  unarchive:
+#    src: https://downloads.apache.org/jmeter/binaries/apache-jmeter-{{ jmeter_version }}.tgz
+#    dest: tmp
+#    remote_src: yes
